@@ -1,0 +1,4 @@
+[build]
+  base = "take-my-hoodie"
+  publish = "public"
+  functions = "netlify/functions"
