@@ -1,0 +1,9 @@
+{
+  "name": "take-my-hoodie",
+  "private": true,
+  "type": "module",
+  "description": "TAKE MY HOODIE presale site + admin (Netlify Functions + Netlify Blobs)",
+  "dependencies": {
+    "@netlify/blobs": "^11.1.9"
+  }
+}

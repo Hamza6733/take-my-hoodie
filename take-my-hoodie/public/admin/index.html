@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Admin — TAKE MY HOODIE</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#0a0a0a">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body class="admin">
+
+  <!-- ============ LOGIN ============ -->
+  <section class="login" id="login-view">
+    <form class="login__box" id="login-form">
+      <p class="logo">TMH<span>.</span> <small>Admin</small></p>
+      <h1>Log in</h1>
+      <label class="a-field">
+        <span>Password</span>
+        <input type="password" name="password" autocomplete="current-password" required autofocus>
+      </label>
+      <button class="btn btn--block" type="submit">Enter <span class="arrow" aria-hidden="true">→</span></button>
+      <p class="a-error" id="login-error" role="alert" hidden></p>
+    </form>
+  </section>
+
+  <!-- ============ EDITOR ============ -->
+  <div id="editor-view" hidden>
+    <header class="a-bar">
+      <a href="/" class="logo" target="_blank" rel="noopener">TMH<span>.</span> <small>Admin</small></a>
+      <div class="a-bar__right">
+        <span class="a-status" id="save-status" role="status"></span>
+        <a href="/" target="_blank" rel="noopener" class="a-link">View site ↗</a>
+        <button type="button" class="a-link" id="logout">Log out</button>
+        <button type="submit" form="product-form" class="btn btn--sm" id="save-btn">Save &amp; publish</button>
+      </div>
+    </header>
+
+    <main class="a-main">
+      <form id="product-form" novalidate>
+
+        <!-- PHOTOS -->
+        <section class="a-card">
+          <div class="a-card__head">
+            <h2>Photos</h2>
+            <p>Portrait (4:5) works best. Images are resized and compressed automatically before upload. Drag &amp; drop or tap to choose.</p>
+          </div>
+          <div class="a-photos" id="photos"></div>
+        </section>
+
+        <!-- PRODUCT -->
+        <section class="a-card">
+          <div class="a-card__head"><h2>Product</h2></div>
+          <div class="a-grid">
+            <label class="a-field a-span-2">
+              <span>Product name <em>shown in PayPal and on receipts</em></span>
+              <input name="productName" maxlength="80" required>
+            </label>
+            <label class="a-field a-span-2">
+              <span>Tagline <em>under the big headline</em></span>
+              <input name="tagline" maxlength="120">
+            </label>
+            <label class="a-field">
+              <span>Price (USD)</span>
+              <input name="price" type="number" min="1" step="0.01" inputmode="decimal" required>
+            </label>
+            <label class="a-field">
+              <span>Shipping per order (USD) <em>0 = free worldwide</em></span>
+              <input name="shippingFlat" type="number" min="0" step="0.01" inputmode="decimal" required>
+            </label>
+            <label class="a-field">
+              <span>Max hoodies per order</span>
+              <input name="maxQty" type="number" min="1" max="50" step="1" inputmode="numeric" required>
+            </label>
+            <label class="a-field">
+              <span>Drop size <em>"limited to ___ pieces"</em></span>
+              <input name="dropSize" type="number" min="1" step="1" inputmode="numeric" required>
+            </label>
+          </div>
+        </section>
+
+        <!-- SALES STATUS + DATES -->
+        <section class="a-card">
+          <div class="a-card__head">
+            <h2>Presale</h2>
+            <p>Checkout closes automatically when the presale end date passes. Use "Sold out" when you hit your drop size.</p>
+          </div>
+          <div class="a-seg" role="radiogroup" aria-label="Sales status">
+            <label><input type="radio" name="status" value="open"><span>Open</span></label>
+            <label><input type="radio" name="status" value="closed"><span>Closed</span></label>
+            <label><input type="radio" name="status" value="soldout"><span>Sold out</span></label>
+          </div>
+          <div class="a-grid" style="margin-top:1.2rem">
+            <label class="a-field">
+              <span>Presale ends <em>your local time</em></span>
+              <input name="presaleEnd" type="datetime-local" required>
+            </label>
+            <label class="a-field">
+              <span>Production starts <em>last day to cancel</em></span>
+              <input name="productionStartDate" type="date" required>
+            </label>
+            <label class="a-field">
+              <span>Ships by</span>
+              <input name="shipDateDate" type="date" required>
+            </label>
+          </div>
+        </section>
+
+        <!-- COLORS -->
+        <section class="a-card">
+          <div class="a-card__head"><h2>Colors</h2></div>
+          <div class="a-rows" id="colors"></div>
+          <button type="button" class="a-add" id="add-color">+ Add color</button>
+        </section>
+
+        <!-- SIZES -->
+        <section class="a-card">
+          <div class="a-card__head">
+            <h2>Sizes &amp; size guide</h2>
+            <p>Measurements in centimeters. Inches are calculated on the site.</p>
+          </div>
+          <div class="a-table-wrap">
+            <table class="a-table">
+              <thead><tr><th>Size</th><th>Chest width</th><th>Body length</th><th>Sleeve</th><th></th></tr></thead>
+              <tbody id="sizes"></tbody>
+            </table>
+          </div>
+          <button type="button" class="a-add" id="add-size">+ Add size</button>
+        </section>
+
+        <!-- DETAILS -->
+        <section class="a-card">
+          <div class="a-card__head"><h2>Details section</h2><p>Leave a block empty to hide it.</p></div>
+          <div id="specs" class="a-specs"></div>
+        </section>
+
+        <!-- CONTACT + PAYMENTS -->
+        <section class="a-card">
+          <div class="a-card__head"><h2>Contact &amp; payments</h2></div>
+          <div class="a-grid">
+            <label class="a-field a-span-2">
+              <span>Contact email</span>
+              <input name="email" type="email" autocomplete="off">
+            </label>
+            <label class="a-field">
+              <span>Instagram handle</span>
+              <input name="instagram" placeholder="takemyhoodie" autocomplete="off">
+            </label>
+            <label class="a-field">
+              <span>TikTok handle</span>
+              <input name="tiktok" placeholder="takemyhoodie" autocomplete="off">
+            </label>
+            <label class="a-field a-span-2">
+              <span>PayPal Client ID <em>developer.paypal.com → Apps &amp; Credentials → Live</em></span>
+              <input name="paypalClientId" autocomplete="off" spellcheck="false">
+            </label>
+          </div>
+        </section>
+
+        <p class="a-error" id="save-error" role="alert" hidden></p>
+        <button type="submit" class="btn btn--block a-save-bottom">Save &amp; publish <span class="arrow" aria-hidden="true">→</span></button>
+        <span class="a-status a-status--bottom" id="save-status-2"></span>
+      </form>
+    </main>
+  </div>
+
+  <script src="/js/config.js"></script>
+  <script src="/admin/admin.js" defer></script>
+</body>
+</html>
